@@ -13,6 +13,7 @@ export class Game {
         this.player = new Player("me", 200, 200);
         
         
+        
     }
 
     init() {
@@ -24,7 +25,7 @@ export class Game {
 
        
     }
-
+    
     move(deltaTime){
 
         if(keys.UP){
@@ -41,8 +42,15 @@ export class Game {
             this.player.x += this.player.velocity*deltaTime
             this.player.lastDir = 'd'
         }
+        if(keys.SPACE){
+            
+            this.player.shoot(this.ctx)
+            
+           
+        }
+        
 
-        console.log(keys);
+        //console.log(keys);
 
 
         
@@ -50,11 +58,12 @@ export class Game {
 
     }
 
-    update(deltaTime) {
+    update(deltaTime, isShoothing) {
         
 
         this.move(deltaTime);
-        this.player.update()
+        
+        this.player.update(deltaTime);
         
              
             

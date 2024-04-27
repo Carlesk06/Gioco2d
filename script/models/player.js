@@ -1,3 +1,6 @@
+import { keys } from "../app.js";
+import { Bullet } from "./bullet.js";
+
 
 export class Player{
     name;
@@ -20,13 +23,30 @@ export class Player{
         this.lastDir = 'd'
         this.pistolaD = document.getElementById("pistolD");
         this.pistolaA = document.getElementById("pistolA");
-        
+        this.bullets = []
+        this.alive = true;
+        this.isShothing = false;
+        this.sparoSound = new Audio("assets/shoot.mp3")
 
     } 
 
-    shoot(ctx) {
+    shoot(ctx, sparoSound) {
         console.log("Colpo");
+        
+        if(this.alive && this.isShothing == false){
+            this.sparoSound.currentTime = 0;
+            if(this.lastDir == 'd'){
+                let proiettile = new Bullet(this.x + this.width+60, this.y+ this.height/3+2,this.lastDir)
+                this.bullets.push(proiettile)
+            }else{
 
+                let proiettile = new Bullet(this.x - 70, this.y+ this.height/3+2,this.lastDir)
+                this.bullets.push(proiettile)
+            }
+            this.sparoSound.play()
+            this.isShothing = true;
+        }
+            
         
     }
 
@@ -45,12 +65,19 @@ export class Player{
         ctx.font = this.width/4.5 +"px Verdana";
         ctx.fillText("POLIZIA", this.x, this.y + this.height/1.5 , this.width*2)
 
+        this.bullets.forEach((b)=>b.draw(ctx))
+
+        
+
+        
+
         //braccia
         if(this.lastDir == 'd'){
 
             ctx.fillStyle = "blue"
             ctx.fillRect(this.x + this.width, this.y+ this.height/2.3, this.width/4, this.height/6);
             ctx.drawImage(this.pistolaD, this.x + this.width+5, this.y+ this.height/3.3)
+            
 
         }else{
 
@@ -85,8 +112,13 @@ export class Player{
 
     }
 
-    update() {
-        
+    update(deltaTime) {
+
+        if(keys.SPACE == false){
+            this.isShothing=false
+        }
+
+        this.bullets.forEach((b)=>b.update(deltaTime))
         //this.health -= 0.08
     }
 

@@ -10,6 +10,7 @@ g.init();
 
 let deltaTime
 let lastTimeStamp
+let isShoothing = false;
 
 function runGame(timeStamp) {
 
@@ -17,7 +18,7 @@ function runGame(timeStamp) {
 
     lastTimeStamp = timeStamp
     g.draw();
-    g.update(deltaTime);
+    g.update(deltaTime, isShoothing);
 
     
     
@@ -29,7 +30,8 @@ export const keys = {
     UP: false,
     DOWN: false,
     LEFT: false,
-    RIGHT: false
+    RIGHT: false,
+    SPACE: false
 
 }
 
@@ -58,9 +60,15 @@ window.addEventListener("keydown", (e)=>{
         
     }
 
+    if(e.key === ' ' ){
+        keys.SPACE = true;
+        
+    }
+
 
 
 });
+
 window.addEventListener("keyup", (e)=>{
 
     if(e.key === 'w'){
@@ -78,6 +86,12 @@ window.addEventListener("keyup", (e)=>{
 
     if(e.key === 'd'){
         keys.RIGHT = false;
+    }
+
+    if(e.key === ' '){
+        keys.SPACE = false;
+        
+        
     }
 
 
