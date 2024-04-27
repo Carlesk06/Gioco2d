@@ -23,30 +23,44 @@ export class Player{
         this.lastDir = 'd'
         this.pistolaD = document.getElementById("pistolD");
         this.pistolaA = document.getElementById("pistolA");
+        this.vampaD = document.getElementById("vampD");
+        this.vampaA = document.getElementById("vampA");
         this.bullets = []
         this.alive = true;
         this.isShothing = false;
         this.sparoSound = new Audio("assets/shoot.mp3")
+        this.ammo = 12;
 
     } 
 
     shoot(ctx, sparoSound) {
         console.log("Colpo");
         
-        if(this.alive && this.isShothing == false){
+        if(this.alive && this.isShothing == false && this.ammo > 0){
             this.sparoSound.currentTime = 0;
             if(this.lastDir == 'd'){
                 let proiettile = new Bullet(this.x + this.width+60, this.y+ this.height/3+2,this.lastDir)
+                
                 this.bullets.push(proiettile)
             }else{
 
                 let proiettile = new Bullet(this.x - 70, this.y+ this.height/3+2,this.lastDir)
                 this.bullets.push(proiettile)
             }
+            this.ammo -= 1;
             this.sparoSound.play()
             this.isShothing = true;
+        }else{
+
+
         }
             
+        
+    }
+
+
+    drawMuzzle(ctx){
+        
         
     }
 
@@ -68,7 +82,19 @@ export class Player{
         this.bullets.forEach((b)=>b.draw(ctx))
 
         
+        if(this.isShothing){
 
+            if(this.lastDir == 'd'){
+
+                ctx.drawImage(this.vampaD,this.x + this.width+60 , this.y + this.height/3-26, 60, 60)
+            }
+            if(this.lastDir == 'a'){
+                
+                ctx.drawImage(this.vampaA,this.x -120 , this.y + this.height/3-26, 60, 60)
+            }
+
+
+        }
         
 
         //braccia
@@ -84,6 +110,16 @@ export class Player{
             ctx.fillStyle = "blue"
             ctx.fillRect(this.x-this.width/4, this.y+ this.height/2.3, this.width/4, this.height/6);
             ctx.drawImage(this.pistolaA, this.x-this.width-5, this.y+ this.height/3.3)
+
+        }
+
+        for(let i =0; i < this.ammo*7; i+=7){
+
+            ctx.fillStyle = "orange"
+            ctx.fillRect(this.x + i, this.y - 30  , 4 , 10);
+            ctx.fillStyle = "red"
+            ctx.fillRect(this.x + i, this.y - 34  , 4 , 3);
+            
 
         }
 
@@ -108,6 +144,8 @@ export class Player{
         ctx.fillRect(this.x, this.y - this.height/5 , this.health, this.height/6);
         ctx.fillStyle = "white"
 
+        
+        
 
 
     }
