@@ -31,7 +31,8 @@ export const keys = {
     DOWN: false,
     LEFT: false,
     RIGHT: false,
-    SPACE: false
+    SPACE: false,
+    RELOAD: false
 
 }
 
@@ -65,6 +66,12 @@ window.addEventListener("keydown", (e)=>{
         
     }
 
+    if(e.key === 'r' ){
+        keys.RELOAD = true;
+        console.log("Ricarica");
+        
+    }
+
 
 
 });
@@ -90,6 +97,11 @@ window.addEventListener("keyup", (e)=>{
 
     if(e.key === ' '){
         keys.SPACE = false;
+        
+        
+    }
+    if(e.key === 'r'){
+        keys.RELOAD = false;
         
         
     }

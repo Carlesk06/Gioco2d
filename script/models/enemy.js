@@ -1,44 +1,34 @@
-import { keys } from "../app.js";
 import { Bullet } from "./bullet.js";
+export class Enemy{
 
-
-export class Player{
-    name;
-    score;
-    velocity; // e non speed, mi raccomando
-    
-    
-
-    constructor(nick, x, y) {
-        
-        
-        this.name = nick;
+    constructor(x,y){
         this.x = x;
         this.y=y;
         this.height = 80;
         this.width = 60;
-        this.velocity=0.5;
+        this.velocity=0.2;
         this.HP = this.width
         this.health = this.HP;
-        this.lastDir = 'd'
-        this.pistolaD = document.getElementById("pistolD");
-        this.pistolaA = document.getElementById("pistolA");
+        this.lastDir = 'a'
+        this.fucileD = document.getElementById("fucilD");
+        this.fucileA = document.getElementById("fucilA");
         this.vampaD = document.getElementById("vampD");
         this.vampaA = document.getElementById("vampA");
         this.bullets = []
         this.alive = true;
         this.isShothing = false;
+        this.static = false;
         this.sparoSound = new Audio("assets/shoot.mp3")
-        this.ricarica = new Audio("assets/reload.mp3")
-        this.MAGAZINE = 12;
-        this.ammo = 12;
+        this.ammo = 6;
+        this.alert=false
+        this.delay = Math.floor(Math.random() * 10000) + 1000;
+    }
 
-    } 
 
     shoot(ctx, sparoSound) {
         console.log("Colpo");
         
-        if(this.alive && this.isShothing == false && this.ammo > 0){
+        if(this.alive){
             this.sparoSound.currentTime = 0;
             if(this.lastDir == 'd'){
                 let proiettile = new Bullet(this.x + this.width+60, this.y+ this.height/3+2,this.lastDir)
@@ -60,18 +50,35 @@ export class Player{
         
     }
 
-    reload(){
-        this.ricarica.play()
-        if(this.ammo < this.MAGAZINE){
-            this.ammo++
+    update(player, deltaTime){
+
+        if(this.static == false && this.alive){
+
+            if(this.health == 0){
+                this.alive = false;
+                
+            }
+            if(player.x > this.x){
+                this.lastDir = 'd'
+            }else if(player.x < this.x){
+                this.lastDir = 'a'
+            }
             
+            if(this.y < player.y){
+                    
+                this.y += this.velocity * deltaTime;
+
+            }
+            if(this.y > player.y ){
+
+                this.y -= this.velocity * deltaTime;
+
+            }
+
         }
-    }
+            
 
 
-    drawMuzzle(ctx){
-        
-        
     }
 
     draw(ctx) {
@@ -81,13 +88,11 @@ export class Player{
             ctx.fillRect(this.x, this.y, this.width, this.height);
             ctx.fillStyle = "gray"
             ctx.fillRect(this.x, this.y +this.height/2, this.width, this.height/4);
-            ctx.fillStyle = "blue"
+            ctx.fillStyle = "gray"
             ctx.fillRect(this.x, this.y+ this.height/3, this.width, this.height/3);
             ctx.fillStyle = "pink"
             ctx.fillRect(this.x, this.y+ (this.height * 10)/100 , this.width, this.height/3);
-            ctx.fillStyle = "white"
-            ctx.font = this.width/4.5 +"px Verdana";
-            ctx.fillText("POLIZIA", this.x, this.y + this.height/1.5 , this.width*2)
+            
 
             this.bullets.forEach((b)=>b.draw(ctx))
 
@@ -110,16 +115,16 @@ export class Player{
             //braccia
             if(this.lastDir == 'd'){
 
-                ctx.fillStyle = "blue"
+                ctx.fillStyle = "gray"
                 ctx.fillRect(this.x + this.width, this.y+ this.height/2.3, this.width/4, this.height/6);
-                ctx.drawImage(this.pistolaD, this.x + this.width+5, this.y+ this.height/3.3)
+                ctx.drawImage(this.fucileD, this.x + this.width/3, this.y+ this.height/3.3)
                 
 
             }else{
 
-                ctx.fillStyle = "blue"
+                ctx.fillStyle = "gray"
                 ctx.fillRect(this.x-this.width/4, this.y+ this.height/2.3, this.width/4, this.height/6);
-                ctx.drawImage(this.pistolaA, this.x-this.width-5, this.y+ this.height/3.3)
+                ctx.drawImage(this.fucileA, this.x-this.width, this.y+ this.height/3.3)
 
             }
 
@@ -128,7 +133,7 @@ export class Player{
                 ctx.fillStyle = "orange"
                 ctx.fillRect(this.x + i, this.y - 30  , 4 , 10);
                 ctx.fillStyle = "red"
-                ctx.fillRect(this.x + i, this.y - 34  , 4 , 3);
+                ctx.fillRect(this.x + i, this.y - 34  , 4 , 11);
                 
 
             }
@@ -138,58 +143,23 @@ export class Player{
                 ctx.fillStyle = "trasparent"
 
             }else if(this.health < (this.HP*40)/100){
-                //console.log("hp critici")
+                console.log("hp critici")
                 ctx.fillStyle = "red"
 
             }else if(this.health < (this.HP*70)/100){
                 
-                //console.log("hp ridotti")
+                console.log("hp ridotti")
                 ctx.fillStyle = "orange"
             }else{
                 
-                //console.log("hp ottimali")
+                console.log("hp ottimali")
                 ctx.fillStyle = "green"
             }
 
             ctx.fillRect(this.x, this.y - this.height/5 , this.health, this.height/6);
             ctx.fillStyle = "white"
         }
-
-        
-        
-
-
-    }
-
-    update(deltaTime) {
-
-        if(keys.SPACE == false){
-            this.isShothing=false
-        }
-        for(let i = 0; i < this.bullets.length; i++){
-            const b = this.bullets[i];
-            if(b.impact){
-                this.bullets.splice(i,1)
-            }
-        }
-
-        this.bullets.forEach((b)=>{
-            
-            b.update(deltaTime)
-            
-        })
-        
-        
-        //this.health -= 0.08
-    }
-
-    setPosition(x,y){
-
-        this.position.x=x;
-        this.position.y=y;
-
     }
 
 
 }
-
