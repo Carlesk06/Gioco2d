@@ -40,15 +40,17 @@ export class Game {
 
         if(this.player.y > window.innerHeight/2){
            
-
+            
             if(keys.UP){
                 this.player.y -= this.player.velocity*deltaTime  
             } 
         }
+        if(this.player.y < window.innerHeight-this.player.height){
             if(keys.DOWN){
 
                 this.player.y += this.player.velocity*deltaTime
             } 
+        }
             if(keys.LEFT){
                 if(this.player.x < 0-this.player.width){
                     this.player.x = window.innerWidth
