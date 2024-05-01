@@ -6,7 +6,7 @@ export class Enemy{
         this.y=y;
         this.height = 80;
         this.width = 60;
-        this.velocity=0.2;
+        this.velocity= Math.random() * (0.3 - 0.1) + 0.1;
         this.HP = this.width
         this.health = this.HP;
         this.lastDir = 'a'
@@ -22,6 +22,8 @@ export class Enemy{
         this.ammo = 6;
         this.alert=false
         this.delay = Math.floor(Math.random() * 10000) + 1000;
+        this.r1 = (Math.random() * (100 - 20)) + 20;
+        this.r2 = (Math.random() * (40 - 10)) + 10;
     }
 
 
@@ -52,6 +54,11 @@ export class Enemy{
 
     update(player, deltaTime){
 
+        let d= deltaTime
+        //this.velocity = this.velocity*deltaTime;
+        //console.log(d)
+        
+
         if(this.static == false && this.alive){
 
             if(this.health == 0){
@@ -60,18 +67,31 @@ export class Enemy{
             }
             if(player.x > this.x){
                 this.lastDir = 'd'
+
+                if(this.x < player.x - this.width*5 + this.r1){
+                    this.x += this.velocity       
+                }else{
+                    this.x -= this.velocity 
+                }
             }else if(player.x < this.x){
                 this.lastDir = 'a'
+                if(this.x > player.x + this.width*5 - this.r1){
+                    this.x -= this.velocity 
+                    
+                }else{
+                    this.x += this.velocity 
+                }
             }
             
-            if(this.y < player.y){
+            if(this.y < player.y + this.r2){
                     
-                this.y += this.velocity * deltaTime;
+                this.y += this.velocity;
+                
 
             }
-            if(this.y > player.y ){
+            if(this.y > player.y - this.r2){
 
-                this.y -= this.velocity * deltaTime;
+                this.y -= this.velocity ;
 
             }
 
@@ -143,16 +163,16 @@ export class Enemy{
                 ctx.fillStyle = "trasparent"
 
             }else if(this.health < (this.HP*40)/100){
-                console.log("hp critici")
+                
                 ctx.fillStyle = "red"
 
             }else if(this.health < (this.HP*70)/100){
                 
-                console.log("hp ridotti")
+                
                 ctx.fillStyle = "orange"
             }else{
                 
-                console.log("hp ottimali")
+                
                 ctx.fillStyle = "green"
             }
 

@@ -10,12 +10,12 @@ export class Game {
         this.canvas = canvas;
         this.nome = nick;
         this.ctx = canvas.getContext('2d');
-        this.player = new Player("me", 200, 800);
+        this.player = new Player("me", window.innerWidth/2, 800);
 
         this.enemies = []
         for(let i=1; i< 4 ; i++){
 
-            let criminal = new Enemy(400*i, this.player.y )
+            let criminal = new Enemy(600*i, this.player.y )
             this.enemies.push(criminal)
 
         }
@@ -105,7 +105,29 @@ export class Game {
                 
             })
         })
-        
+
+        for(let i = 0; i < this.enemies.length; i++){
+            const e = this.enemies[i];
+            if(!e.alive){
+                this.enemies.splice(i,1)
+            }
+        }
+
+        console.log(this.enemies.length);
+        if(this.enemies.length < 3){
+            let ds= Math.floor(Math.random()* 10 +1);
+            console.log(ds);
+            if(ds%2==0){
+
+                this.enemies.push(new Enemy(window.innerWidth+300, 800))
+            }else{
+
+                this.enemies.push(new Enemy(0-100, 800))
+            }
+
+            
+            console.log("in arrivo");
+        }
              
             
         

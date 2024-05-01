@@ -32,6 +32,7 @@ export class Player{
         this.ricarica = new Audio("assets/reload.mp3")
         this.MAGAZINE = 12;
         this.ammo = 12;
+        this.outOfAmmo= new Audio("assets/outOfAmmo.mp3");
 
     } 
 
@@ -53,8 +54,12 @@ export class Player{
             this.sparoSound.play()
             this.isShothing = true;
         }else{
-
-
+            
+            if(this.ammo==0){
+                this.outOfAmmo.play()
+                
+            }
+           
         }
             
         
@@ -123,15 +128,22 @@ export class Player{
 
             }
 
-            for(let i =0; i < this.ammo*7; i+=7){
+            if(this.ammo != 0){
+                for(let i =0; i < this.ammo*7; i+=7){
 
-                ctx.fillStyle = "orange"
-                ctx.fillRect(this.x + i, this.y - 30  , 4 , 10);
-                ctx.fillStyle = "red"
-                ctx.fillRect(this.x + i, this.y - 34  , 4 , 3);
-                
+                    ctx.fillStyle = "orange"
+                    ctx.fillRect(this.x + i, this.y - 30  , 4 , 10);
+                    ctx.fillStyle = "red"
+                    ctx.fillRect(this.x + i, this.y - 34  , 4 , 3);
+                    
 
+                }
+            }else{
+                ctx.font = this.width/3 +"px Verdana";
+                ctx.fillStyle = "white"
+                ctx.fillText("R to Reload", this.x, this.y - 70 + this.height/1.5 , this.width*2)
             }
+                
 
             //barra vita
             if(this.health <= 0){

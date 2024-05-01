@@ -8,20 +8,21 @@ export class Bullet{
         this.dir=dir;
         this.width = 10;
         this.height = 5;
-        this.damage = 15;
+        this.damage = 12;
         this.impact = false;
+        this.velocity = 1.6
 
     }
 
     update(deltaTime){
         if(this.dir == 'd'){
-            this.x +=1*deltaTime;
+            this.x +=this.velocity*deltaTime;
 
             
 
 
         }else if(this.dir == 'a'){
-            this.x -=1*deltaTime
+            this.x -=this.velocity*deltaTime
 
 
 
