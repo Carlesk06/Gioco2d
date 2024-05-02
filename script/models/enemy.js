@@ -6,7 +6,7 @@ export class Enemy{
         this.y=y;
         this.height = 80;
         this.width = 60;
-        this.velocity= Math.random() * (0.3 - 0.1) + 0.1;
+        this.velocity= Math.random() * (0.2 - 0.1) + 0.1;
         this.HP = this.width
         this.health = this.HP;
         this.lastDir = 'a'
@@ -21,16 +21,18 @@ export class Enemy{
         this.sparoSound = new Audio("assets/shoot.mp3")
         this.ammo = 6;
         this.alert=false
-        this.delay = Math.floor(Math.random() * 10000) + 1000;
+        this.delay = Math.floor(Math.random() * 20000) + 1000;
+        
         this.r1 = (Math.random() * (100 - 20)) + 20;
         this.r2 = (Math.random() * (40 - 10)) + 10;
     }
 
+    
 
     shoot(ctx, sparoSound) {
         console.log("Colpo");
         
-        if(this.alive){
+        if(this.alive && this.ammo != 0){
             this.sparoSound.currentTime = 0;
             if(this.lastDir == 'd'){
                 let proiettile = new Bullet(this.x + this.width+60, this.y+ this.height/3+2,this.lastDir)
@@ -52,12 +54,24 @@ export class Enemy{
         
     }
 
+    
+
     update(player, deltaTime){
 
-        let d= deltaTime
+        for(let i = 0; i < this.bullets.length; i++){
+            const b = this.bullets[i];
+            if(b.impact){
+                this.bullets.splice(i,1)
+            }
+        }
         //this.velocity = this.velocity*deltaTime;
         //console.log(d)
         
+        this.bullets.forEach((b)=>{
+            
+            b.update(deltaTime)
+            
+        })
 
         if(this.static == false && this.alive){
 
@@ -69,32 +83,35 @@ export class Enemy{
                 this.lastDir = 'd'
 
                 if(this.x < player.x - this.width*5 + this.r1){
-                    this.x += this.velocity       
+                    this.x += this.velocity*deltaTime
                 }else{
-                    this.x -= this.velocity 
+                    this.x -= this.velocity*deltaTime
                 }
             }else if(player.x < this.x){
                 this.lastDir = 'a'
                 if(this.x > player.x + this.width*5 - this.r1){
-                    this.x -= this.velocity 
+                    this.x -= this.velocity*deltaTime
                     
                 }else{
-                    this.x += this.velocity 
+                    this.x += this.velocity*deltaTime
                 }
             }
             
             if(this.y < player.y + this.r2){
                     
-                this.y += this.velocity;
+                this.y += this.velocity*deltaTime;
                 
 
             }
             if(this.y > player.y - this.r2){
 
-                this.y -= this.velocity ;
+                this.y -= this.velocity *deltaTime;
 
             }
 
+            if(Math.floor(Math.random()*350)+1 == 23){
+                this.shoot()
+            }
         }
             
 

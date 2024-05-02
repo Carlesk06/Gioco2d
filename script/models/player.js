@@ -139,7 +139,7 @@ export class Player{
 
                 }
             }else{
-                ctx.font = this.width/3 +"px Verdana";
+                ctx.font = this.width/3 +"px AcmeFont";
                 ctx.fillStyle = "white"
                 ctx.fillText("R to Reload", this.x, this.y - 70 + this.height/1.5 , this.width*2)
             }
@@ -174,23 +174,28 @@ export class Player{
     }
 
     update(deltaTime) {
-
-        if(keys.SPACE == false){
-            this.isShothing=false
-        }
-        for(let i = 0; i < this.bullets.length; i++){
-            const b = this.bullets[i];
-            if(b.impact){
-                this.bullets.splice(i,1)
-            }
-        }
-
-        this.bullets.forEach((b)=>{
-            
-            b.update(deltaTime)
-            
-        })
         
+        
+
+       
+        
+        if(this.alive&&this.health>0){
+            if(keys.SPACE == false){
+                this.isShothing=false
+            }
+            for(let i = 0; i < this.bullets.length; i++){
+                const b = this.bullets[i];
+                if(b.impact){
+                    this.bullets.splice(i,1)
+                }
+            }
+
+            this.bullets.forEach((b)=>{
+                
+                b.update(deltaTime)
+                
+            })
+        }
         
         //this.health -= 0.08
     }

@@ -8,7 +8,7 @@ export class Bullet{
         this.dir=dir;
         this.width = 10;
         this.height = 5;
-        this.damage = 12;
+        this.damage = 15;
         this.impact = false;
         this.velocity = 1.6
 
