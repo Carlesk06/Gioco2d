@@ -1,6 +1,6 @@
 import { Player } from "../models/player.js";
 import { Enemy } from "../models/enemy.js";
-import { keys } from "../app.js";
+import { keys, resetKeys } from "../app.js";
 
 
 
@@ -22,17 +22,17 @@ let startTime = new Date().getTime();
 export class Game {
     playerNickname;
 
-    constructor(canvas, nick) {
+    constructor(canvas) {
         
         this.canvas = canvas;
-        this.nome = nick;
+        this.nPartite=1;
         this.ctx = canvas.getContext('2d');
         this.player = new Player("me", window.innerWidth/2, 800);
         this.gameStart=true
         this.gameOver=false;
         this.startTime = new Date().getTime();
         this.eliminations = 0
-        this.gmX= -200
+        this.gmX= -500
         this.enemies = []
         for(let i=1; i< 0 ; i++){
 
@@ -58,6 +58,41 @@ export class Game {
 
        
     }
+
+
+    reset(){
+        if(this.gameOver){
+
+
+            startTime = new Date().getTime();
+
+            this.enemies.splice(0, this.enemies.length);
+            this.player = null;
+
+            let conferma = window.confirm("La partita ricomincerà")
+
+            if(conferma){
+                this.restart()
+            }else{
+                
+            }
+
+        }
+
+
+    }
+
+
+    restart(){
+        resetKeys()
+        this.gmX = -500
+        this.player = new Player("me", window.innerWidth/2, 800);
+        this.eliminations = 0;
+        this.gameOver = false
+        this.nPartite +=1
+    }
+
+
     
     move(deltaTime){
         if(this.player.alive){
@@ -120,21 +155,26 @@ export class Game {
 
 
 
-        if(this.player.health <= 0){
-            this.player.alive = false
-            this.gameOver=true
-            
-        }
+        
 
         if(this.gameOver){
             this.gmX += 1.5
-            if(this.gmX >  window.innerWidth +100){
-                this.gmX = -200
+            if(this.gmX >  window.innerWidth +400){
+                this.gmX = -500
+            }
+
+            if(keys.RESTART){
+                this.reset()
             }
         }
 
         
         if( this.gameStart && this.gameOver == false){
+            if(this.player.health <= 0){
+                this.player.alive = false
+                this.gameOver=true
+                
+            }
             this.move(deltaTime);
             
             this.player.update(deltaTime);
@@ -181,7 +221,7 @@ export class Game {
             console.log(this.enemies.length);
             if(this.enemies.length < 3){
                 let ds= Math.floor(Math.random()* 10 +1);
-                console.log(ds);
+                
                 if(ds%2==1){
 
                     this.enemies.push(new Enemy(window.innerWidth+300, Math.random()* (window.innerHeight - window.innerHeight/2) +window.innerHeight/2))
@@ -191,7 +231,7 @@ export class Game {
                 }
 
                 
-                console.log("in arrivo");
+                
             }
                 
         }  
@@ -201,26 +241,27 @@ export class Game {
     
     draw() {
 
-        
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
-        if(this.player.health > 0){
-            this.player.draw(this.ctx);
-        }
-        this.enemies.forEach((e)=>{
+        if(!this.gameOver){
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
+            if(this.player.health > 0){
+                this.player.draw(this.ctx);
+            }
+            this.enemies.forEach((e)=>{
 
-            e.draw(this.ctx)
-        })
-        
-        this.ctx.fillStyle = "white"
-        this.ctx.font = 30 +"px AcmeFont";
-        this.ctx.fillText("Time: "+updateTimer() + "  " , window.innerWidth/8 , 100) 
-        
-        this.ctx.fillText("Nome: "+this.nome +"  ", window.innerWidth/3 , 100)
-        this.ctx.fillText("Kills: "+ this.eliminations, window.innerWidth-300, 100)  
-
-        if(this.gameOver){
+                e.draw(this.ctx)
+            })
             
+            this.ctx.fillStyle = "white"
+            this.ctx.font = 30 +"px AcmeFont";
+            this.ctx.fillText("Time: "+updateTimer() + " \t\t\t Current Game: "+this.nPartite , window.innerWidth/8 , 100) 
+            
+            
+            this.ctx.fillText("Kills: "+ this.eliminations, window.innerWidth-300, 100)  
+        }
+        if(this.gameOver){
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
             this.ctx.fillStyle = "red"
             this.ctx.font = 50 +"px AcmeFont";
             let tag = "sei un 'piedipiatti'"
@@ -241,7 +282,7 @@ export class Game {
 
 
 
-            this.ctx.fillText("Game Over ,  "+tag  ,this.gmX , 800)
+            this.ctx.fillText("Game Over ,  "+tag  + " T to restart",this.gmX - 300 , 800)
         }
         
     }

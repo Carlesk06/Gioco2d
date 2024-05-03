@@ -2,9 +2,9 @@ import { Game } from "./logic/game.js";
 
 let canvas = document.getElementById('board');
 
-let nick = window.prompt("Inserisci NOME: ");
 
-let g = new Game(canvas, nick);
+
+let g = new Game(canvas);
 
 g.init();
 
@@ -32,10 +32,18 @@ export const keys = {
     LEFT: false,
     RIGHT: false,
     SPACE: false,
-    RELOAD: false
+    RELOAD: false,
+    RESTART: false
 
 }
 
+export function resetKeys() {
+    for (let key in keys) {
+        if (keys.hasOwnProperty(key)) {
+            keys[key] = false;
+        }
+    }
+}
 
 
 
@@ -45,20 +53,20 @@ window.onload = runGame;
 
 window.addEventListener("keydown", (e)=>{
 
-    if(e.key === 'w'){
+    if(e.key === 'w'|| e.key === 'W'){
         keys.UP = true;
 
     }
 
-    if(e.key === 's'){
+    if(e.key === 's'|| e.key === 'S'){
         keys.DOWN = true;
     }
 
-    if(e.key === 'a'){
+    if(e.key === 'a'|| e.key === 'A'){
         keys.LEFT = true;
     }
 
-    if(e.key === 'd'){
+    if(e.key === 'd' || e.key === 'D'){
         keys.RIGHT = true;
         
     }
@@ -68,9 +76,15 @@ window.addEventListener("keydown", (e)=>{
         
     }
 
-    if(e.key === 'r' ){
+    if(e.key === 'r' || e.key === 'R'){
         keys.RELOAD = true;
-        console.log("Ricarica");
+        
+        
+    }
+
+    if(e.key === 't' || e.key === 'T'){
+        keys.RESTART= true;
+        
         
     }
 
@@ -80,20 +94,20 @@ window.addEventListener("keydown", (e)=>{
 
 window.addEventListener("keyup", (e)=>{
 
-    if(e.key === 'w'){
+    if(e.key === 'w' || e.key === 'W'){
         keys.UP = false;
 
     }
 
-    if(e.key === 's'){
+    if(e.key === 's' || e.key === 'S'){
         keys.DOWN = false;
     }
 
-    if(e.key === 'a'){
+    if(e.key === 'a' || e.key === 'A'){
         keys.LEFT = false;
     }
 
-    if(e.key === 'd'){
+    if(e.key === 'd' || e.key === 'D'){
         keys.RIGHT = false;
     }
 
@@ -102,8 +116,13 @@ window.addEventListener("keyup", (e)=>{
         
         
     }
-    if(e.key === 'r'){
+    if(e.key === 'r' || e.key === 'R'){
         keys.RELOAD = false;
+        
+        
+    }
+    if(e.key === 't' || e.key === 'T'){
+        keys.RESTART= false;
         
         
     }
