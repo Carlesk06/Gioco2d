@@ -3,7 +3,7 @@ import { Enemy } from "../models/enemy.js";
 import { keys, resetKeys } from "../app.js";
 
 
-
+//calcolo del tempo di gioco
 let startTime = new Date().getTime();
 
         function updateTimer() {
@@ -18,7 +18,7 @@ let startTime = new Date().getTime();
 
         setInterval(updateTimer, 1000);
 
-
+//classe che gestisce il gioco
 export class Game {
     playerNickname;
 
@@ -51,15 +51,14 @@ export class Game {
         this.canvas.style.position = 'absolute';
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        //this.canvas.style.backgroundImage = "url('" + this.config.BACKGROUND_IMG_SRC + "')";
-        //this.canvas.style.backgroundSize = "contain";
+        
         
         this.backgroundImage= document.getElementById("Sfondo");
 
        
     }
 
-
+    //resetto tutto quello che è presente nel gioco
     reset(){
         if(this.gameOver){
 
@@ -82,7 +81,7 @@ export class Game {
 
     }
 
-
+    //ri-inizializzo le informazioni per riavvio
     restart(){
         resetKeys()
         this.gmX = -500
@@ -93,14 +92,12 @@ export class Game {
     }
 
 
-    
+    //gestione movimento tramite chiavi in app
     move(deltaTime){
         if(this.player.alive){
             if(this.player.y > window.innerHeight/2){
 
-                //movimento con il mouse
-                //this.player.x = vector.x
-                //this.player.y = vector.y
+                
             
                 
                 if(keys.UP){
@@ -143,7 +140,7 @@ export class Game {
             }
         
 
-        //console.log(keys);
+       
 
 
         

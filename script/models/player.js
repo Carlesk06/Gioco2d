@@ -5,7 +5,7 @@ import { Bullet } from "./bullet.js";
 export class Player{
     name;
     score;
-    velocity; // e non speed, mi raccomando
+    velocity; 
     
     
 

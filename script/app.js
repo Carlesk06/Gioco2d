@@ -2,7 +2,14 @@ import { Game } from "./logic/game.js";
 
 let canvas = document.getElementById('board');
 
+/*
+Sparatutto, elimina i nemici per ottenere punti vita e punti
+ogni range di eliminazioni conferisce un titolo che verrà mostrato una volta terminata la partita
+il player viene eliminato allo svuotamento della barra della vita
+ogni tot colpi, sarà necessario ricaricare con 'R'.
 
+Il gioco è inoltre riavviabile.
+*/
 
 let g = new Game(canvas);
 

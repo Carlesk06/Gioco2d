@@ -15,6 +15,7 @@ export class Bullet{
     }
 
     update(deltaTime){
+        //check della direzione
         if(this.dir == 'd'){
             this.x +=this.velocity*deltaTime;
 
@@ -62,7 +63,7 @@ export class Bullet{
     }
 
     draw(ctx){
-        
+        //direzione
         if(this.dir == 'd'){
             ctx.fillStyle = "red"
             ctx.fillRect(this.x, this.y, this.width, this.height);

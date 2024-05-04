@@ -64,8 +64,7 @@ export class Enemy{
                 this.bullets.splice(i,1)
             }
         }
-        //this.velocity = this.velocity*deltaTime;
-        //console.log(d)
+        
         
         this.bullets.forEach((b)=>{
             
