@@ -255,6 +255,7 @@ export class Game {
             this.ctx.fillStyle = "white"
             this.ctx.font = 30 +"px AcmeFont";
             this.ctx.fillText("Time: "+updateTimer() + " \t\t\t Current Game: "+this.nPartite , window.innerWidth/8 , 100) 
+            this.ctx.fillText("Move: [ w a s d ] \t Shoot: [ Space ]" , window.innerWidth/8 , 150) 
             
             
             this.ctx.fillText("Kills: "+ this.eliminations, window.innerWidth-300, 100)  
